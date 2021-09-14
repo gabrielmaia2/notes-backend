@@ -45,4 +45,18 @@ router.post('/post', (req, res) => {
   });
 });
 
+router.put('/put', (req, res) => {
+  const {
+    userId, id, title, content
+  } = req.body;
+
+  let sql = 'INSERT INTO note (id, title, content) VALUES ';
+  sql += `(${id}, ${db.escape(title)}, ${db.escape(content)}) `;
+  sql += 'ON DUPLICATE KEY UPDATE';
+
+  db.pool.query(sql, (err) => {
+    res.json({ err });
+  });
+});
+
 module.exports = router;
