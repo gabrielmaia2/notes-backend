@@ -3,6 +3,18 @@ const db = require('../db');
 
 const router = Router();
 
+function addTagsToNote(noteId, tags, callback) {
+  let sql = 'INSERT INTO note_tag (note_id, tag_name) VALUES ';
+
+  const rows = [];
+  tags.forEach((tag) => rows.push(`(${db.escape(noteId)}, ${db.escape(tag)})`));
+  sql += rows.join(', ');
+
+  db.pool.query(sql, (err) => {
+    callback(err);
+  });
+}
+
 router.get('/get', (req, res) => {
   const { userId, search } = req.body;
 
@@ -12,6 +24,24 @@ router.get('/get', (req, res) => {
 
   db.pool.query(sql, (err, notes) => {
     res.json({ err, notes });
+  });
+});
+
+router.post('/post', (req, res) => {
+  const {
+    userId, title, content, tags
+  } = req.body;
+
+  let sql = 'INSERT INTO note (title, content) VALUES';
+  sql += `(${db.escape(title)}, ${db.escape(content)})`;
+
+  db.pool.query(sql, (insertNoteErr, rows) => {
+    if (insertNoteErr) {
+      res.json({ err: insertNoteErr });
+      return;
+    }
+
+    addTagsToNote(rows[0].id, tags, (insertTagsErr) => res.json({ err: insertTagsErr }));
   });
 });
 
