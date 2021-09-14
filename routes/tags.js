@@ -3,7 +3,7 @@ const db = require('../db');
 
 const router = Router();
 
-router.get('/get', (req, res) => {
+router.post('/get', (req, res) => {
   const { userId } = req.body;
 
   db.pool.query('SELECT name FROM tag', (err, tags) => {

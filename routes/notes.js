@@ -28,7 +28,7 @@ function removeTagsFromNote(noteId, tags, callback) {
   });
 }
 
-router.get('/getPreviews', (req, res) => {
+router.post('/getPreviews', (req, res) => {
   const { userId, search } = req.body;
 
   const searchPattern = db.escape(`%${search}%`);
@@ -40,7 +40,7 @@ router.get('/getPreviews', (req, res) => {
   });
 });
 
-router.get('/get', (req, res) => {
+router.post('/get', (req, res) => {
   const { userId, id } = req.body;
 
   const sql = `SELECT id, title, content FROM note WHERE id=${db.escape(id)}`;
