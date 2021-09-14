@@ -4,6 +4,8 @@ const db = require('../db');
 const router = Router();
 
 function addTagsToNote(noteId, tags, callback) {
+  if (!tags) return;
+
   let sql = 'INSERT INTO note_tag (note_id, tag_name) VALUES ';
 
   const rows = [];
@@ -16,6 +18,8 @@ function addTagsToNote(noteId, tags, callback) {
 }
 
 function removeTagsFromNote(noteId, tags, callback) {
+  if (!tags) return;
+
   let sql = 'DELETE FROM note_tag (note_id, tag_name) WHERE ';
   sql += `note_id=${db.escape(noteId)} AND (`;
 
