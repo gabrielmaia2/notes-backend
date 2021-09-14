@@ -28,11 +28,11 @@ function removeTagsFromNote(noteId, tags, callback) {
   });
 }
 
-router.get('/get', (req, res) => {
+router.get('/getPreviews', (req, res) => {
   const { userId, search } = req.body;
 
   const searchPattern = db.escape(`%${search}%`);
-  let sql = 'SELECT id, title, content FROM note WHERE ';
+  let sql = 'SELECT id, title, SUBSTRING(`content`, 1, 300) FROM note WHERE ';
   sql += `title LIKE ${searchPattern} OR content LIKE ${searchPattern}`;
 
   db.pool.query(sql, (err, notes) => {
