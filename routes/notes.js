@@ -40,6 +40,16 @@ router.get('/getPreviews', (req, res) => {
   });
 });
 
+router.get('/get', (req, res) => {
+  const { userId, id } = req.body;
+
+  const sql = `SELECT id, title, content FROM note WHERE id=${db.escape(id)}`;
+
+  db.pool.query(sql, (err, notes) => {
+    res.json({ err, note: notes[0] });
+  });
+});
+
 router.post('/post', (req, res) => {
   const {
     userId, title, content, tags
