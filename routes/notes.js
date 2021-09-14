@@ -59,4 +59,16 @@ router.put('/put', (req, res) => {
   });
 });
 
+router.delete('/delete', (req, res) => {
+  const {
+    userId, id
+  } = req.body;
+
+  const sql = `DELETE FROM note WHERE id=${db.escape(id)}`;
+
+  db.pool.query(sql, (err) => {
+    res.json({ err });
+  });
+});
+
 module.exports = router;
