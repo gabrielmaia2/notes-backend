@@ -32,4 +32,14 @@ router.put('/put', (req, res) => {
   });
 });
 
+router.delete('/delete', (req, res) => {
+  const { userId, tag } = req.body;
+
+  const sql = `DELETE FROM tag WHERE name=${db.escape(tag)}`;
+
+  db.pool.query(sql, (err) => {
+    res.json({ err });
+  });
+});
+
 module.exports = router;
