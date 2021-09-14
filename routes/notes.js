@@ -15,6 +15,19 @@ function addTagsToNote(noteId, tags, callback) {
   });
 }
 
+function removeTagsFromNote(noteId, tags, callback) {
+  let sql = 'DELETE FROM note_tag (note_id, tag_name) WHERE ';
+  sql += `note_id=${db.escape(noteId)} AND (`;
+
+  const rows = [];
+  tags.forEach((tag) => rows.push(`tag_name=${db.escape(tag)}`));
+  sql += `${rows.join(', ')})`;
+
+  db.pool.query(sql, (err) => {
+    callback(err);
+  });
+}
+
 router.get('/get', (req, res) => {
   const { userId, search } = req.body;
 
@@ -68,6 +81,21 @@ router.delete('/delete', (req, res) => {
 
   db.pool.query(sql, (err) => {
     res.json({ err });
+  });
+});
+
+router.put('/editTags', (req, res) => {
+  const {
+    userId, id, addTags, removeTags
+  } = req.body;
+
+  addTagsToNote(id, addTags, (addTagsErr) => {
+    if (addTagsErr) {
+      res.json({ err: addTagsErr });
+      return;
+    }
+
+    removeTagsFromNote(id, removeTags, (removeTagsErr) => res.json({ err: removeTagsErr }));
   });
 });
 
