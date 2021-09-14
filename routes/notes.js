@@ -31,9 +31,12 @@ function removeTagsFromNote(noteId, tags, callback) {
 router.post('/getPreviews', (req, res) => {
   const { userId, search } = req.body;
 
-  const searchPattern = db.escape(`%${search}%`);
-  let sql = 'SELECT id, title, SUBSTRING(`content`, 1, 300) FROM note WHERE ';
-  sql += `title LIKE ${searchPattern} OR content LIKE ${searchPattern}`;
+  let sql = 'SELECT id, title, SUBSTRING(`content`, 1, 300) AS content FROM note ';
+
+  if (search) {
+    const searchPattern = db.escape(`%${search}%`);
+    sql += `WHERE title LIKE ${searchPattern} OR content LIKE ${searchPattern}`;
+  }
 
   db.pool.query(sql, (err, notes) => {
     res.json({ err, notes });
