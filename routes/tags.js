@@ -22,4 +22,14 @@ router.post('/post', (req, res) => {
   });
 });
 
+router.put('/put', (req, res) => {
+  const { userId, oldTag, newTag } = req.body;
+
+  const sql = `UPDATE tag SET name=${db.escape(newTag)} WHERE name=${db.escape(oldTag)}`;
+
+  db.pool.query(sql, (err) => {
+    res.json({ err });
+  });
+});
+
 module.exports = router;
