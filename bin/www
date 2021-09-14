@@ -8,6 +8,7 @@ const debug = require('debug')('notes-backend:server');
 const http = require('http');
 const app = require('../app');
 
+require('dotenv').config();
 
 const { env } = process;
 
@@ -78,7 +79,7 @@ function onListening() {
  * Get port from environment and store in Express.
  */
 
-port = normalizePort(env.PORT || '9000');
+port = normalizePort(env.PORT || '3000');
 app.set('port', port);
 
 /**
