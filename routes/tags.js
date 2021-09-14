@@ -12,4 +12,14 @@ router.get('/get', (req, res) => {
   });
 });
 
+router.post('/post', (req, res) => {
+  const { userId, tag } = req.body;
+
+  const sql = `INSERT INTO tag (name) VALUES (${db.escape(tag)})`;
+
+  db.pool.query(sql, (err) => {
+    res.json({ err });
+  });
+});
+
 module.exports = router;
