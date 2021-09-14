@@ -35,7 +35,7 @@ function removeTagsFromNote(noteId, tags, callback) {
 router.post('/getPreviews', (req, res) => {
   const { userId, search } = req.body;
 
-  let sql = 'SELECT id, title, SUBSTRING(`content`, 1, 300) AS content FROM note ';
+  let sql = 'SELECT id, title, SUBSTRING(`content`, 1, 700) AS content FROM note ';
 
   if (search) {
     const searchPattern = db.escape(`%${search}%`);
