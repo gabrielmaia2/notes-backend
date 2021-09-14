@@ -77,7 +77,7 @@ router.put('/put', (req, res) => {
   } = req.body;
 
   let sql = 'INSERT INTO note (id, title, content) VALUES ';
-  sql += `(${id}, ${db.escape(title)}, ${db.escape(content)}) `;
+  sql += `(${db.escape(id)}, ${db.escape(title)}, ${db.escape(content)}) `;
   sql += 'ON DUPLICATE KEY UPDATE';
 
   db.pool.query(sql, (err) => {
