@@ -4,7 +4,7 @@ const db = require('../db');
 const router = Router();
 
 function addTagsToNote(noteId, tags, callback) {
-  if (!tags) return;
+  if (!Array.isArray(tags) || tags.length === 0) return;
 
   let sql = 'INSERT INTO note_tag (note_id, tag_name) VALUES ';
 
