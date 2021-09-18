@@ -83,7 +83,7 @@ router.post('/post', (req, res) => {
         res.json(notes[0]);
       }
 
-      addTagsToNote(newId, tags, (insertTagsErr) => {
+      addTagsToNote(notes[0].id, tags, (insertTagsErr) => {
         if (insertTagsErr) {
           res.json({ err: insertTagsErr });
           return;
