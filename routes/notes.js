@@ -89,7 +89,7 @@ router.put('/put', (req, res) => {
   });
 });
 
-router.delete('/delete', (req, res) => {
+router.post('/delete', (req, res) => {
   const {
     userId, id
   } = req.body;
