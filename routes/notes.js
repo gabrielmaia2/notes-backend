@@ -62,16 +62,36 @@ router.post('/post', (req, res) => {
     userId, title, content, tags
   } = req.body;
 
-  let sql = 'INSERT INTO note (title, content) VALUES';
-  sql += `(${db.escape(title)}, ${db.escape(content)})`;
+  let insertNoteSql = 'INSERT INTO note (title, content) VALUES ';
+  insertNoteSql += `(${db.escape(title)}, ${db.escape(content)})`;
 
-  db.pool.query(sql, (insertNoteErr, rows) => {
+  db.pool.query(insertNoteSql, (insertNoteErr, okPacket) => {
     if (insertNoteErr) {
       res.json({ err: insertNoteErr });
       return;
     }
 
-    addTagsToNote(rows[0].id, tags, (insertTagsErr) => res.json({ err: insertTagsErr }));
+    const getNoteSql = `SELECT id, title, content FROM note WHERE id=${db.escape(okPacket.insertId)}`;
+
+    db.pool.query(getNoteSql, (getNoteErr, notes) => {
+      if (getNoteErr) {
+        res.json({ err: getNoteErr });
+        return;
+      }
+
+      if (!Array.isArray(tags) || tags.length === 0) {
+        res.json(notes[0]);
+      }
+
+      addTagsToNote(newId, tags, (insertTagsErr) => {
+        if (insertTagsErr) {
+          res.json({ err: insertTagsErr });
+          return;
+        }
+
+        res.json(notes[0]);
+      });
+    });
   });
 });
 
